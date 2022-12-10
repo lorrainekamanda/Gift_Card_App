@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser
+from .models import CustomUser,Product,ProductCategory
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         fields = [
 
-            'uniqueID','email', 'password'
+            'id','email', 'password'
         ]
         extra_kwargs = {
             'password': {
@@ -25,3 +25,25 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+class ProductSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Product
+
+        fields = [
+
+            'id', 'price', 'rank', 'product_category',
+            'created_time', 'updated_time', 'author_name'
+        ]
+
+
+class ProductCategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductCategory
+
+        fields = [
+
+            'id','name'
+        ]
