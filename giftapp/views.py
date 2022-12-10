@@ -1,7 +1,8 @@
 from rest_framework.views import APIView
-from .serializers import UserSerializer
+from .serializers import UserSerializer,ProductSerializer,ProductCategorySerializer
 from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework import generics, mixins
+from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from .models import CustomUser,Product,ProductCategory
 import jwt
 import datetime
@@ -47,3 +48,76 @@ class LoginView(APIView):
         }
 
         return response
+
+
+
+def is_authenticated(request, *args, **kwargs):
+    token = request.COOKIES.get('jwt')
+    if not token:
+        return False
+    try:
+        payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        user = CustomUser.objects.filter(id=payload.get('id')).first()
+        request.user = user
+
+    except jwt.ExpiredSignatureError:
+        return False
+
+    return True
+
+
+
+
+
+class ProductsView(mixins.ListModelMixin, mixins.CreateModelMixin,
+                generics.GenericAPIView):
+
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def get(self, request, *args, **kwargs):
+       
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+
+        return self.create(request, *args, **kwargs)
+
+
+
+class ProductView(mixins.RetrieveModelMixin,
+               mixins.UpdateModelMixin,
+               mixins.DestroyModelMixin,
+               generics.GenericAPIView):
+
+    """ get,delete and update a product """
+
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def get(self, request, *args, **kwargs):
+        
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+
+        obj_id = kwargs.pop('pk')
+        obj = self.queryset.filter(id=obj_id).first()
+
+      
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+
+        obj_id = kwargs.pop('pk')
+        obj = self.queryset.filter(id=obj_id).first()
+
+       
+
+        return self.destroy(request, *args, **kwargs)

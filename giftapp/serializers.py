@@ -33,8 +33,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
         fields = [
 
-            'id', 'price', 'rank', 'product_category',
-            'created_time', 'updated_time', 'author_name'
+            'id','name','price', 'rank', 'product_category',
+            'created_time'
         ]
 
 

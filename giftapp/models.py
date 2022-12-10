@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-import uuid
 from djmoney.models.fields import MoneyField
 
 
@@ -69,9 +68,10 @@ class Wishlist(models.Model):
         on_delete=models.CASCADE,
         
     )
+    
 
     def __str__(self):
-        return str(self.wish)
+        return str(self.user)
 
     def add_product_to_wishlist(self,wish):
         product_category = Product.Objects.get(id=wish)
