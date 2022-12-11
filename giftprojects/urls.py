@@ -15,8 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from rest_framework_swagger.views import get_swagger_view
+from .yasg import urlpatterns as doc_urls
+
+schema_view = get_swagger_view(title='Wishlist Api')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('giftapp.urls')),
+    path('api/docs/', schema_view)
+    
 ]

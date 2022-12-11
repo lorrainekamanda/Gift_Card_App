@@ -9,6 +9,8 @@ django-money = "*"
 django-rest-framework = "*"
 pyjwt = "*"
 django-filter = "*"
+django-rest-swagger = "*"
+drf-yasg = "*"
 
 [dev-packages]
 
