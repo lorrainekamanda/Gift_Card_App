@@ -8,6 +8,7 @@ import jwt
 import datetime
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter,SearchFilter
+import django_filters
 
 
 class RegisterView(APIView):
@@ -66,15 +67,26 @@ def is_authenticated(request, *args, **kwargs):
         return False
 
     return True
-
+    
+class ProductFilter(django_filters.FilterSet):
+    class Meta:
+        model = Product
+        fields = {
+            'price': ['lt', 'gt'],
+           
+        }
 
 class ProductsView(mixins.ListModelMixin, mixins.CreateModelMixin,
                 generics.GenericAPIView):
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
     filter_backends = (DjangoFilterBackend,OrderingFilter)
+    filterset_class = ProductFilter
     ordering_fields = ('rank','created_time')
+    
+    
 
     def get(self, request, *args, **kwargs):
        
