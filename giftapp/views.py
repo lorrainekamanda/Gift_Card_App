@@ -6,6 +6,8 @@ from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from .models import CustomUser,Product,ProductCategory
 import jwt
 import datetime
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter,SearchFilter
 
 
 class RegisterView(APIView):
@@ -71,6 +73,8 @@ class ProductsView(mixins.ListModelMixin, mixins.CreateModelMixin,
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    filter_backends = (DjangoFilterBackend,OrderingFilter)
+    ordering_fields = ('rank','created_time')
 
     def get(self, request, *args, **kwargs):
        

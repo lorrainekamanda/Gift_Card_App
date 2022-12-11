@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'giftapp',
     'djmoney',
     'rest_framework',
+    'django_filters'
     
 ]
 
