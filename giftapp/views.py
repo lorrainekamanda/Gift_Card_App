@@ -1,14 +1,18 @@
 from rest_framework.views import APIView
-from .serializers import UserSerializer,ProductSerializer,ProductCategorySerializer
+from .serializers import UserSerializer,ProductSerializer,ProductCategorySerializer,WishListSerializer,PasswordChangeSerializer
 from rest_framework.response import Response
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins,response
 from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
-from .models import CustomUser,Product,ProductCategory
+from .models import CustomUser,Product,ProductCategory,Wishlist
 import jwt
 import datetime
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter,SearchFilter
 import django_filters
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.views.decorators.debug import sensitive_post_parameters
+from django.utils.decorators import method_decorator
+
 
 
 class RegisterView(APIView):
@@ -137,8 +141,11 @@ class ProductView(mixins.RetrieveModelMixin,
 
 
 
-class ProductsCategoryView(mixins.ListModelMixin, mixins.CreateModelMixin,
+class ProductsCategoryView(mixins.ListModelMixin, 
+                mixins.CreateModelMixin,
                 generics.GenericAPIView):
+    
+    """ get,delete and update a Product Category """
 
     queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerializer
@@ -179,3 +186,60 @@ class ProductCategoryView(mixins.RetrieveModelMixin,
        
 
         return self.destroy(request, *args, **kwargs)
+
+
+def is_permission_allowed(request, obj, *args, **kwargs):
+    return obj.user == request.user
+
+class WishlistsView(mixins.ListModelMixin, mixins.CreateModelMixin,
+                generics.GenericAPIView):
+
+    def get_queryset(self):
+            user = self.request.user
+
+            return Wishlist.objects.filter(user=user)
+
+    
+    serializer_class = WishListSerializer
+
+    def get(self, request, *args, **kwargs):
+        
+        
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+
+       
+
+        request.data['user'] = request.user.id
+
+        return self.create(request, *args, **kwargs)
+
+
+sensitive_post_parameters_m = method_decorator(
+    sensitive_post_parameters(
+        "password", "old_password", "new_password1", "new_password2"
+    )
+)
+
+class PasswordChangeView(generics.GenericAPIView):
+    """
+    Update the existing password with new one.
+    Accepts the following POST parameters: new_password1, new_password2
+    Returns the success/fail message.
+    """
+
+    serializer_class = PasswordChangeSerializer
+    permission_classes = (IsAuthenticated,)
+
+    @sensitive_post_parameters_m
+    def dispatch(self, *args, **kwargs):
+        return super(PasswordChangeView, self).dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return response.Response({"detail": ("New password has been saved.")})

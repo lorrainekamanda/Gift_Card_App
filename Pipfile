@@ -4,13 +4,20 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
 django-money = "*"
 django-rest-framework = "*"
 pyjwt = "*"
 django-filter = "*"
 django-rest-swagger = "*"
 drf-yasg = "*"
+psycopg2 = "*"
+rest-framework-money-field = "*"
+babel = "*"
+install = "*"
+django-cors-headers = "*"
+django-utils-six = "*"
+django-smart-selects = "*"
+django = "==4.0"
 
 [dev-packages]
 

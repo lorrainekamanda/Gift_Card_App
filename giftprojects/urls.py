@@ -24,6 +24,7 @@ schema_view = get_swagger_view(title='Wishlist Api')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('giftapp.urls')),
+    path('chaining/', include('smart_selects.urls')),
     path('api/docs/', schema_view)
     
 ]

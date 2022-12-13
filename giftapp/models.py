@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from djmoney.models.fields import MoneyField
+from babel.numbers import list_currencies
+from smart_selects.db_fields import ChainedForeignKey
+CURRENCY_CHOICES = [(currency, currency) for currency in list_currencies()] 
 
 
 class UserManager(BaseUserManager):
@@ -44,7 +47,10 @@ class ProductCategory(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    price = MoneyField(max_digits=14, decimal_places=2, default_currency='USD')
+    price = models.CharField(max_length=14)
+    price_currency = models.CharField(
+        max_length=3, default='USD', choices=CURRENCY_CHOICES
+    ) 
     rank = models.IntegerField()
     product_category =models.ForeignKey(
         ProductCategory,
@@ -63,25 +69,29 @@ class Wishlist(models.Model):
         on_delete=models.CASCADE
         
     )
-    wish =models.ForeignKey(
-        Product,
+    category =models.OneToOneField(
+        ProductCategory,
         on_delete=models.CASCADE,
         
     )
-    
+    wish = ChainedForeignKey(
+        Product,
+        chained_field="category",
+        chained_model_field="name",
+        
+        auto_choose=True,
+        sort=True,
+        
+        
+    )
 
     def __str__(self):
-        return str(self.user)
+        return str(self.wish)
 
-    def add_product_to_wishlist(self,wish):
-        product_category = Product.Objects.get(id=wish)
-        user = self.user_id
-        
-        wishlists = Wishlist.objects.filter(user=user, product__product_category_id=product_category.id)
-        if not wishlists: 
-            Wishlist.objects.create(user=user, product_id=wish)
-        else:
-            return 
+
+   
+
+  
 
 
     

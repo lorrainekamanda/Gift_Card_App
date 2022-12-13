@@ -1,0 +1,9 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}  
+{% block footer %}
+<div id="footer"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'js/chainedfk.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/bindfield.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/chainedm2m.js' %}"></script>
+{% endblock %}
