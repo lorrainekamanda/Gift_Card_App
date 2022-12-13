@@ -145,7 +145,7 @@ class ProductsCategoryView(mixins.ListModelMixin,
                 mixins.CreateModelMixin,
                 generics.GenericAPIView):
     
-    """ get,delete and update a Product Category """
+    """ get,delete and post a Product Category """
 
     queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerializer

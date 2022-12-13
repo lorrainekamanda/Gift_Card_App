@@ -18,8 +18,11 @@ django-cors-headers = "*"
 django-utils-six = "*"
 django-smart-selects = "*"
 django = "==4.0"
+mypy = "*"
+django-stubs = "*"
 
 [dev-packages]
+mypy = "*"
 
 [requires]
 python_version = "3.10"

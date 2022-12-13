@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from djmoney.models.fields import MoneyField
 from babel.numbers import list_currencies
 from smart_selects.db_fields import ChainedForeignKey
+
+
 CURRENCY_CHOICES = [(currency, currency) for currency in list_currencies()] 
 
 

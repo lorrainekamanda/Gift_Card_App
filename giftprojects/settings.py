@@ -93,7 +93,8 @@ DATABASES = {
         'USER': os.environ.get('DB_USER', 'postgres'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', 5432)
+        'PORT': os.environ.get('DB_PORT', 5432),
+      
 
     },
 }
@@ -150,3 +151,4 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 USE_DJANGO_JQUERY = True
+
