@@ -45,7 +45,7 @@ class TestSignup(APITestCase):
 
         client = APIClient()
         client.post('/api/sign-up/', {'email': 'test@gmail.com','password':"test1234"}, format='json')
-        client.login(email='test@gmail.com', password='test1234')
+        client.login(email='test@gmail.com', password='test1234',format='json')
 
     def tearDown(self) -> None:
         return super().tearDown()

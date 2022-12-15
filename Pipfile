@@ -16,10 +16,12 @@ babel = "*"
 install = "*"
 django-cors-headers = "*"
 django-utils-six = "*"
-django-smart-selects = "*"
 django = "==4.0"
 mypy = "*"
 django-stubs = "*"
+django-smart-selects = "*"
+django-autocomplete-light = "*"
+drf-extra-fields = "*"
 
 [dev-packages]
 mypy = "*"

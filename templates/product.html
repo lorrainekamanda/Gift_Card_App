@@ -1,0 +1,17 @@
+{% extends "rest_framework/base.html" %}
+
+{% load rest_framework %}
+
+<html><body>
+<h1>Hello</h1>
+<form action="{% url 'wishlists-view'  %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media.js }}
+    {% render_form serializer %}
+   
+    <input type="submit" value="Save">
+</form>
+<script src="/static/smart-selects/admin/js/chainedfk.js"></script>
+<script src="/static/smart-selects/admin/js/bindfields.js"></script>
+<script src="/static/smart-selects/admin/js/chainedm2m.js"></script>
+</body></html>

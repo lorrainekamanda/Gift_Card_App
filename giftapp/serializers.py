@@ -3,6 +3,8 @@ from .models import CustomUser,Product,ProductCategory,Wishlist
 from rest_framework_money_field import MoneyField
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.conf import settings
+from smart_selects.form_fields import ChainedModelChoiceField
+from drf_extra_fields.relations import PresentablePrimaryKeyRelatedField
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,15 +32,21 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     
-   
+    category_name = serializers.ReadOnlyField(source='product_category.name')
     class Meta:
         model = Product
         
         fields = [
 
-            'id','name','price','price_currency','rank', 'product_category',
+            'id','name','price','price_currency','rank','category_name','product_category',
             'created_time'
         ]
+
+        extra_kwargs = {
+           
+            'product_category': {'write_only': True},
+        
+        }
 
 
 class ProductCategorySerializer(serializers.ModelSerializer):
@@ -51,16 +59,23 @@ class ProductCategorySerializer(serializers.ModelSerializer):
             'id','name'
         ]
 
+
 class WishListSerializer(serializers.ModelSerializer):
-    wish = serializers.CharField(source='wish.name')
+   
+    user = serializers.ReadOnlyField(source='user.email')
+    category = serializers.ReadOnlyField(source='category.name')
+   
     
+
     class Meta:
+    
         model = Wishlist
+        
+        fields = ['user','category','wish']
 
-        fields = '__all__'
 
 
-
+    
 class PasswordChangeSerializer(serializers.Serializer):
     old_password = serializers.CharField(max_length=128)
     new_password1 = serializers.CharField(max_length=128)

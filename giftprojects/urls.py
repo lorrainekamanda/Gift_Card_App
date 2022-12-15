@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path,include
 from rest_framework_swagger.views import get_swagger_view
 from .yasg import urlpatterns as doc_urls
+from django.views.generic.base import TemplateView
+
 
 schema_view = get_swagger_view(title='Wishlist Api')
 
@@ -25,6 +27,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('giftapp.urls')),
     path('chaining/', include('smart_selects.urls')),
-    path('api/docs/', schema_view)
+    path('api/docs/', schema_view),
+    path('sw.js', TemplateView.as_view(template_name="sw.js", 
+    content_type='application/javascript'), name='sw.js'),
     
 ]

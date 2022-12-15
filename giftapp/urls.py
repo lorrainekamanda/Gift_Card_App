@@ -9,5 +9,6 @@ urlpatterns = [
     path('category-view/', ProductsCategoryView.as_view(), name='category_view'),
     path('category/<pk>/', ProductCategoryView.as_view(), name='category_detail'),
     path('wishlists-view/', WishlistsView.as_view(), name='wishlists_view'),
-    path('password/change/', PasswordChangeView.as_view(), name='rest_password_change'),
+    
+    
 ]

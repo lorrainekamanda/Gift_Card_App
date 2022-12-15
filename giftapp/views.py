@@ -12,6 +12,7 @@ import django_filters
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.views.decorators.debug import sensitive_post_parameters
 from django.utils.decorators import method_decorator
+from rest_framework.renderers import TemplateHTMLRenderer
 
 
 
@@ -176,6 +177,15 @@ class ProductCategoryView(mixins.RetrieveModelMixin,
         
         return self.retrieve(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+
+        
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+
+        
+        return self.create(request, *args, **kwargs)
+
     def delete(self, request, *args, **kwargs):
         if not is_authenticated(request):
             raise AuthenticationFailed('Unauthenticated')
@@ -193,6 +203,9 @@ def is_permission_allowed(request, obj, *args, **kwargs):
 
 class WishlistsView(mixins.ListModelMixin, mixins.CreateModelMixin,
                 generics.GenericAPIView):
+    
+
+    template_name = 'product.html'
 
     def get_queryset(self):
             user = self.request.user
@@ -201,6 +214,8 @@ class WishlistsView(mixins.ListModelMixin, mixins.CreateModelMixin,
 
     
     serializer_class = WishListSerializer
+
+ 
 
     def get(self, request, *args, **kwargs):
         
@@ -211,12 +226,9 @@ class WishlistsView(mixins.ListModelMixin, mixins.CreateModelMixin,
         if not is_authenticated(request):
             raise AuthenticationFailed('Unauthenticated')
 
-       
-
         request.data['user'] = request.user.id
-
         return self.create(request, *args, **kwargs)
-
+   
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(

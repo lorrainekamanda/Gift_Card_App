@@ -46,6 +46,9 @@ class ProductCategory(models.Model):
     def __str__(self):
         return str(self.name)
 
+
+    
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     price = models.CharField(max_length=14)
@@ -64,6 +67,9 @@ class Product(models.Model):
     def __str__(self):
         return str(self.name)
 
+
+    
+
 class Wishlist(models.Model):
     user =models.ForeignKey(
         CustomUser,
@@ -78,16 +84,19 @@ class Wishlist(models.Model):
     wish = ChainedForeignKey(
         Product,
         chained_field="category",
-        chained_model_field="name",
-        
+        chained_model_field="product_category",
         auto_choose=True,
+        show_all=False,
         sort=True,
-        
         
     )
 
     def __str__(self):
-        return str(self.wish)
+        return '{}'.format(self.wish)
+
+
+    
+   
 
 
    

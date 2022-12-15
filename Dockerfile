@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.6
 
 RUN apt-get update \
     && apt-get -y upgrade \
@@ -14,8 +14,11 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY ./requirements.txt .
-RUN pip3 install -r requirements.txt
+RUN pip3 install pipenv
+RUN apt-get update && apt-get install -y --no-install-recommends gcc
 
-
+# Install python dependencies in /.venv
+COPY Pipfile .
+COPY Pipfile.lock .
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
 ADD . .
