@@ -61,21 +61,22 @@ class ProductCategorySerializer(serializers.ModelSerializer):
 
 
 class WishListSerializer(serializers.ModelSerializer):
-   
-    user = serializers.ReadOnlyField(source='user.email')
-    category = serializers.ReadOnlyField(source='category.name')
-   
-    
 
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    
+    
     class Meta:
     
         model = Wishlist
-        
-        fields = ['user','category','wish']
+        fields = ['id','email','user','product_category','category','product','wish']
 
+        read_only_fields = ('product','category')
+        extra_kwargs = {
+            'wish': {'write_only': True},
+            
+            
+        }
 
-
-    
 class PasswordChangeSerializer(serializers.Serializer):
     old_password = serializers.CharField(max_length=128)
     new_password1 = serializers.CharField(max_length=128)

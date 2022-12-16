@@ -13,7 +13,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.views.decorators.debug import sensitive_post_parameters
 from django.utils.decorators import method_decorator
 from rest_framework.renderers import TemplateHTMLRenderer
-
+from collections import OrderedDict
 
 
 class RegisterView(APIView):
@@ -205,7 +205,7 @@ class WishlistsView(mixins.ListModelMixin, mixins.CreateModelMixin,
                 generics.GenericAPIView):
     
 
-    template_name = 'product.html'
+   
 
     def get_queryset(self):
             user = self.request.user
@@ -215,18 +215,16 @@ class WishlistsView(mixins.ListModelMixin, mixins.CreateModelMixin,
     
     serializer_class = WishListSerializer
 
- 
-
     def get(self, request, *args, **kwargs):
-        
         
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if not is_authenticated(request):
             raise AuthenticationFailed('Unauthenticated')
-
-        request.data['user'] = request.user.id
+        
+        
+        
         return self.create(request, *args, **kwargs)
    
 

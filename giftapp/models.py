@@ -95,9 +95,17 @@ class Wishlist(models.Model):
         return '{}'.format(self.wish)
 
 
-    
+    @property
+    def email(self):
+        return self.user.email
    
+    @property
+    def product(self):
+        return self.wish.name
 
+    @property
+    def product_category(self):
+        return self.wish.product_category.name
 
    
 

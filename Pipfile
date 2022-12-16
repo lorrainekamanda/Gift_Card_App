@@ -22,9 +22,14 @@ django-stubs = "*"
 django-smart-selects = "*"
 django-autocomplete-light = "*"
 drf-extra-fields = "*"
+gunicorn = "*"
 
 [dev-packages]
 mypy = "*"
 
 [requires]
 python_version = "3.10"
+
+[scripts]
+start = "gunicorn --preload -b 0.0.0.0:8020 giftprojects.wsgi:application --threads 8 --workers 4"
+lint = ""

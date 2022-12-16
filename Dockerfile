@@ -1,24 +1,16 @@
-FROM python:3.6
+FROM python:3.9-slim
 
-RUN apt-get update \
-    && apt-get -y upgrade \
-    && rm -rf /var/lib/apt/lists/*
+# Allow service to handle stops gracefully
+STOPSIGNAL SIGQUIT
 
-RUN apt-get update \
-    && apt-get install -y \
-    curl \
-    wget \
-    && rm -rf /var/lib/apt/lists/*
-
-ENV PYTHONUNBUFFERED=1
-
-WORKDIR /app
-
+# Install pipenv
 RUN pip3 install pipenv
-RUN apt-get update && apt-get install -y --no-install-recommends gcc
 
-# Install python dependencies in /.venv
-COPY Pipfile .
-COPY Pipfile.lock .
-RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
-ADD . .
+# Install dependencies
+COPY Pipfile* ./
+RUN pipenv lock --requirements > requirements.txt
+RUN pip3 install -r requirements.txt
+
+# Start the server
+CMD ["gunicorn", "--preload", "-b", "0.0.0.0:8020", "project.wsgi:application", "--threads", "8", "-w", "4"]
+

@@ -1,17 +1,40 @@
- version: "3.8"
+version: "3.7"
+
+volumes:
+  postgres_data:
 
 services:
-  web:
-    build: .
-    command: python3 manage.py runserver 0.0.0.0:8000
-    ports:
-      - 8000:8000
+  postgres:
+    container_name: django-starter-postgres
+    image: postgres:12
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+  django-project:
+    container_name: giftprojects
     depends_on:
-      - db
-
-  db:
-    image: postgres
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - postgres
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./giftprojects/:/giftprojects/
+      - ./giftapp/:/giftapp/
+      - ./img/:/img/
+    env_file:
+      - local.env
+  nginx:
+    container_name: gitftprojects-nginx
+    image: nginx:1.19.0-alpine
+    ports:
+      - "8020:80"
+    volumes:
+      - ./static:/code/static
+      - ./media:/code/media
+      - ./nginx:/etc/nginx/conf.d/
+    depends_on:
+      - django-project
+    restart: always
