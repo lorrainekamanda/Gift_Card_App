@@ -23,10 +23,10 @@ $ python3 -m venv virtual
 ## Installing and using the app using Django!
 1. Clone this repo
 ```sh
-$ git clone https://github.com/lorrainekamanda/NewsRestApi
+$ git clone https://github.com/lorrainekamanda/Gift_Card_App.git
 ```
 
-[Github](https://github.com/) - You want to set up a new Github repo for this code so you can make changes for your own project. (also needed for deploying to Heroku)
+
 ```sh
 git remote set-url origin <remote> # remote is git url to your repo.
 git push origin main
@@ -34,10 +34,20 @@ git push origin main
 
 2. Build the Docker Container
 ```sh
-$ cd NewsboardApi
-$ docker-compose up --build
+$ cd Gift_Card_APP
+
 ```
-You should see all the resources including the web server startup in your terminal. Now, open up another terminal window in the same directory.
+
+First, you'll need PostgreSQL running somewhere. You'll also need to make sure `pipenv` is installed. Then create a new file called `.env` in the root folder, and fill it with something like this:
+```dotenv
+
+SECRET_KEY=yellowpolkadotbikini
+POSTGRES_USER=lemon
+POSTGRES_PASSWORD=coolpassworddude
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+```
+$ docker-compose up --build
 
 3. Populate Postgres DB
 ```sh
@@ -52,27 +62,6 @@ Now refresh `localhost:8000`.
 $ make sure to register and login to use the application
 ```
 
-
-
-
-## Deployment!
-This app is deployed to heroku the link is https://newsboardapi.herokuapp.com/
-
-If you'd like to deploy your project to Heroku, that's also pretty simple now. Just use the following commands:
-```sh
-# generates a new Heroku app
-heroku create 
-# creates new postgres db
-heroku addons:create heroku-postgresql:hobby-dev 
-
-# sets the SECRET KEY in production. You'll need to generate one. You can use - [https://djecrety.ir/](https://djecrety.ir/) or [https://miniwebtool.com/django-secret-key-generator/](https://miniwebtool.com/django-secret-key-generator/) if you'd like.
-heroku config:set SECRET_KEY='replace me with a generated secret key'
-
-# deploy to Heroku
-git push heroku main
-heroku open
-```
-Congrats! You now have a pretty great starting point for your Django project.
 
 
 

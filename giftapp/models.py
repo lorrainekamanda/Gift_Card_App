@@ -79,8 +79,6 @@ class Wishlist(models.Model):
     category =models.OneToOneField(
         ProductCategory,
         on_delete=models.CASCADE,
-        null=True,
-        related_name='wishes'
         
     )
     wish = ChainedForeignKey(
@@ -99,15 +97,9 @@ class Wishlist(models.Model):
 
     @property
     def email(self):
-        return self.user.email
+        return self.user.name
    
-    @property
-    def product(self):
-        return self.wish.name
 
-    @property
-    def product_category(self):
-        return self.wish.product_category.name
 
    
 

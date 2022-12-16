@@ -72,6 +72,9 @@ def is_authenticated(request, *args, **kwargs):
         return False
 
     return True
+
+def is_permission_allowed(request, obj, *args, **kwargs):
+    return obj.user == request.user
     
 class ProductFilter(django_filters.FilterSet):
     class Meta:
@@ -198,14 +201,13 @@ class ProductCategoryView(mixins.RetrieveModelMixin,
         return self.destroy(request, *args, **kwargs)
 
 
-def is_permission_allowed(request, obj, *args, **kwargs):
-    return obj.user == request.user
+
 
 class WishlistsView(mixins.ListModelMixin, mixins.CreateModelMixin,
                 generics.GenericAPIView):
-    
-
-   
+    """
+    Add Product remember one product per cartegory.
+    """
 
     def get_queryset(self):
             user = self.request.user
@@ -222,17 +224,36 @@ class WishlistsView(mixins.ListModelMixin, mixins.CreateModelMixin,
     def post(self, request, *args, **kwargs):
         if not is_authenticated(request):
             raise AuthenticationFailed('Unauthenticated')
+        return self.create(request, *args, **kwargs)
         
-        wish_data = request.data
+     
+class WishlistView(mixins.RetrieveModelMixin,
+               mixins.UpdateModelMixin,
+               mixins.DestroyModelMixin,
+               generics.GenericAPIView):
 
-        new_wish = Wishlist.objects.create(user= self.request.user,
-        category = wish_data['category'],
-        wish=wish_data['wish'])
+    """ get and delete a Wishlist"""
 
-        serializer = WishListSerializer(new_wish)
+    queryset = Wishlist.objects.all()
+    serializer_class = WishListSerializer
+
+    def get(self, request, *args, **kwargs):
         
-        return response(serializer.data)
-   
+        return self.retrieve(request, *args, **kwargs)
+ 
+    
+
+    def delete(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+
+        obj_id = kwargs.pop('pk')
+        obj = self.queryset.filter(id=obj_id).first()
+
+        if obj and not is_permission_allowed(request, obj):
+            raise PermissionDenied()
+
+        return self.destroy(request, *args, **kwargs)
 
 sensitive_post_parameters_m = method_decorator(
     sensitive_post_parameters(
