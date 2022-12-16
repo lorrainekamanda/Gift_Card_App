@@ -79,6 +79,8 @@ class Wishlist(models.Model):
     category =models.OneToOneField(
         ProductCategory,
         on_delete=models.CASCADE,
+        null=True,
+        related_name='wishes'
         
     )
     wish = ChainedForeignKey(

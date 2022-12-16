@@ -223,9 +223,15 @@ class WishlistsView(mixins.ListModelMixin, mixins.CreateModelMixin,
         if not is_authenticated(request):
             raise AuthenticationFailed('Unauthenticated')
         
+        wish_data = request.data
+
+        new_wish = Wishlist.objects.create(user= self.request.user,
+        category = wish_data['category'],
+        wish=wish_data['wish'])
+
+        serializer = WishListSerializer(new_wish)
         
-        
-        return self.create(request, *args, **kwargs)
+        return response(serializer.data)
    
 
 sensitive_post_parameters_m = method_decorator(

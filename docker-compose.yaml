@@ -6,10 +6,9 @@ volumes:
 services:
   postgres:
     container_name: django-starter-postgres
-    image: postgres:12
+    image: postgres
     restart: always
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
+    
     env_file:
       - .env
   django-project:
@@ -25,7 +24,7 @@ services:
       - ./giftapp/:/giftapp/
       - ./img/:/img/
     env_file:
-      - local.env
+      - .env
   nginx:
     container_name: gitftprojects-nginx
     image: nginx:1.19.0-alpine

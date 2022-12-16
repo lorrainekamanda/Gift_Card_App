@@ -10,8 +10,6 @@ pyjwt = "*"
 django-filter = "*"
 django-rest-swagger = "*"
 drf-yasg = "*"
-psycopg2 = "*"
-rest-framework-money-field = "*"
 babel = "*"
 install = "*"
 django-cors-headers = "*"
@@ -23,6 +21,7 @@ django-smart-selects = "*"
 django-autocomplete-light = "*"
 drf-extra-fields = "*"
 gunicorn = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 mypy = "*"
@@ -31,5 +30,5 @@ mypy = "*"
 python_version = "3.10"
 
 [scripts]
-start = "gunicorn --preload -b 0.0.0.0:8020 giftprojects.wsgi:application --threads 8 --workers 4"
 lint = ""
+start = "gunicorn --preload -b 0.0.0.0:8020 giftprojects.wsgi:application --threads 8 --workers 4"
