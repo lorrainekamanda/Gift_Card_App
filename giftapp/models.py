@@ -111,7 +111,7 @@ class Wishlist(models.Model):
         if not wishlists:
             super(Wishlist, self).save(*args, **kwargs)
         else:
-            print('wishlist there')
+            return
         
         
 

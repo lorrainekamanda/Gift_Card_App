@@ -81,3 +81,16 @@ class TestProduct(APITestCase):
         return super().tearDown()
 
 
+class TestWishlist(APITestCase):
+    def test_product(request):
+
+        factory = APIRequestFactory()
+        request = factory.post('/api/wishlists-view/', {'product_id': 'car','user_id':'admin@gmail.com'}, format='json')
+        
+        request = factory.get('/api/wishlists-view/', {'product_id': 'car','user_id':'admin@gmail.com'}, format='json')
+
+        request = factory.delete('/api/wishlists-view/', {'product_id': 'car','user_id':'admin@gmail.com'}, format='json')
+        
+
+    def tearDown(self) -> None:
+        return super().tearDown()

@@ -1,10 +1,11 @@
 from rest_framework import serializers
 from .models import CustomUser,Product,ProductCategory,Wishlist
 from rest_framework_money_field import MoneyField
-from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
+from django.contrib.auth.forms import SetPasswordForm
 from django.conf import settings
-from smart_selects.form_fields import ChainedModelChoiceField
-from drf_extra_fields.relations import PresentablePrimaryKeyRelatedField
+from rest_framework.validators import ValidationError
+
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -76,7 +77,8 @@ class WishListSerializer(serializers.ModelSerializer):
             'product_id': {'write_only': True},
            
         }
-        
+    
+
         
 class PasswordChangeSerializer(serializers.Serializer):
     old_password = serializers.CharField(max_length=128)

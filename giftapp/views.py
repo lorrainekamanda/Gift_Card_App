@@ -226,6 +226,7 @@ class WishlistsView(mixins.ListModelMixin, mixins.CreateModelMixin,
             raise AuthenticationFailed('Unauthenticated')
         return self.create(request, *args, **kwargs)
         
+        
      
 class WishlistView(mixins.RetrieveModelMixin,
                mixins.UpdateModelMixin,
