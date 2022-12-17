@@ -206,13 +206,13 @@ class ProductCategoryView(mixins.RetrieveModelMixin,
 class WishlistsView(mixins.ListModelMixin, mixins.CreateModelMixin,
                 generics.GenericAPIView):
     """
-    Add Product remember one product per cartegory.
+    Add Wishlist Product Per category.
     """
 
     def get_queryset(self):
             user = self.request.user
 
-            return Wishlist.objects.filter(user=user)
+            return Wishlist.objects.filter(user_id=user)
 
     
     serializer_class = WishListSerializer

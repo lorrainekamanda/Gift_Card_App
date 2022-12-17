@@ -62,19 +62,19 @@ class ProductCategorySerializer(serializers.ModelSerializer):
 
 class WishListSerializer(serializers.ModelSerializer):
 
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    user_id = serializers.HiddenField(default=serializers.CurrentUserDefault())
     
     
     class Meta:
     
         model = Wishlist
-        fields = ('id','email','user','category','product','wish')
+        fields = ['id','email','user_id','product_id','product','category']
 
-        read_only_fields = ('product',)
+        read_only_fields = ('email','product','category')
+
         extra_kwargs = {
-            'wish': {'write_only': True},
-            
-            
+            'product_id': {'write_only': True},
+           
         }
         
         

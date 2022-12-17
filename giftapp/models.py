@@ -71,34 +71,49 @@ class Product(models.Model):
     
 
 class Wishlist(models.Model):
-    user =models.ForeignKey(
+    user_id =models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE
         
     )
-    category =models.OneToOneField(
-        ProductCategory,
-        on_delete=models.CASCADE,
-        
-    )
-    wish = ChainedForeignKey(
+  
+    product_id= models.ForeignKey(
         Product,
-        chained_field="category",
-        chained_model_field="product_category",
-        auto_choose=True,
-        show_all=False,
-        sort=True,
+        on_delete=models.CASCADE,
+        verbose_name='product'
+    
         
     )
 
     def __str__(self):
-        return '{}'.format(self.wish)
+        return '{}'.format(self.product_id)
 
 
     @property
     def email(self):
-        return self.user.name
-   
+        return self.user_id.email
+    
+    @property
+    def id(self):
+        return self.id
+    @property
+    def product(self):
+        return self.product_id.name
+
+    @property
+    def category(self):
+        return self.product_id.product_category.name
+
+    def save(self, *args, **kwargs):
+        
+        user = self.user_id
+        wishlists = Wishlist.objects.filter(user_id=user,product_id__product_category=self.product_id.product_category)
+        if not wishlists:
+            super(Wishlist, self).save(*args, **kwargs)
+        else:
+            print('wishlist there')
+        
+        
 
 
    
