@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import CustomUser,Product,ProductCategory,Wishlist
-from rest_framework_money_field import MoneyField
 from django.contrib.auth.forms import SetPasswordForm
 from django.conf import settings
 from rest_framework.validators import ValidationError

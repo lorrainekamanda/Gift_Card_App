@@ -29,7 +29,7 @@ services:
     container_name: gitftprojects-nginx
     image: nginx:1.19.0-alpine
     ports:
-      - "8020:80"
+      - "8000:80"
     volumes:
       - ./static:/code/static
       - ./media:/code/media

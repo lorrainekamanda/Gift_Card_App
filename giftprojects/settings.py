@@ -32,9 +32,7 @@ ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0']
 # Application definition
 
 INSTALLED_APPS = [
-    'smart_selects',
-    'dal',
-    'dal_select2',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'giftapp',
-    'djmoney',
+    'smart_selects',
     'rest_framework',
     'django_filters',
     'rest_framework_swagger',
@@ -97,6 +95,7 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT'),
+        'POSTGRES_HOST_AUTH_METHOD':os.environ.get('POSTGRES_HOST_AUTH_METHOD')
       
 
     },

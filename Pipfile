@@ -28,7 +28,3 @@ mypy = "*"
 
 [requires]
 python_version = "3.10"
-
-[scripts]
-lint = ""
-start = "gunicorn --preload -b 0.0.0.0:8020 giftprojects.wsgi:application --threads 8 --workers 4"

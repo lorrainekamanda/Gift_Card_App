@@ -39,7 +39,7 @@ $ cd Gift_Card_APP
 ```
 
 First, you'll need PostgreSQL running somewhere. You'll also need to make sure `pipenv` is installed. Then create a new file called `.env` in the root folder, and fill it with something like this:
-```dotenv
+```.env
 
 SECRET_KEY=yellowpolkadotbikini
 POSTGRES_USER=lemon
@@ -49,11 +49,7 @@ POSTGRES_PORT=5432
 ```
 $ docker-compose up --build
 
-3. Populate Postgres DB
-```sh
 
-$ docker-compose run web python manage.py migrate
-```
 Now refresh `localhost:8000`. 
 
 3. Authentication and Authorization
