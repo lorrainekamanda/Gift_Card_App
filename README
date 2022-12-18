@@ -50,7 +50,7 @@ POSTGRES_PORT=5432
 $ docker-compose up --build
 
 
-Now refresh `localhost:8000`. 
+Now go to `http://0.0.0.0:8000/`. 
 
 3. Authentication and Authorization
 ```sh
